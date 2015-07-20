@@ -52,7 +52,8 @@ An example is shown below:
             "type": "fingerprint"
         }
     ]
-}```
+}
+```
 
 
 Log Format
