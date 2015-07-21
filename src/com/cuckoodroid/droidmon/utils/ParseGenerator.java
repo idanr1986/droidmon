@@ -193,7 +193,7 @@ public class ParseGenerator {
 		try {
 			return ParseGenerator.parse(param.getResult());
 		} catch (Exception e) {
-			Logger.logShell("return error: " + e.getMessage()+" "+hookJson.toString());
+			Logger.logShell("result error: " + e.getMessage()+" "+hookJson.toString());
 			return "";
 		}
 	}
