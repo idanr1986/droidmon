@@ -40,18 +40,25 @@ An example is shown below:
 {
     "hookConfigs": [
         {
-            "class_name": "android.telephony.TelephonyManager", 
-            "method": "getDeviceId", 
+            "class_name": "libcore.io.IoBridge", 
+            "method": "open", 
             "thisObject": false, 
-            "type": "fingerprint"
-        }, 
+            "type": "file"
+        },
         {
-            "class_name": "android.telephony.TelephonyManager", 
-            "method": "getSubscriberId", 
-            "thisObject": false, 
-            "type": "fingerprint"
+            "class_name": "libcore.io.IoBridge",
+            "method": "close",
+            "thisObject": true,
+            "type": "file"
+        },
+        {
+            "class_name": "android.app.ActivityManager",
+            "method": "getRunningTasks",
+            "thisObject": false,
+            "type": "binder"
         }
-    ]
+    ], 
+    "trace": false
 }
 ```
 
