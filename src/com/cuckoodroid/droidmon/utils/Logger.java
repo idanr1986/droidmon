@@ -1,5 +1,13 @@
 package com.cuckoodroid.droidmon.utils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.google.gson.Gson;
@@ -123,7 +131,42 @@ public class Logger {
 	
 	public static void logTraceMethod(MethodHookParam param, MethodApiType mType) throws JSONException {
 		Logger.logHook(ParseGenerator.generateHookDataJson(param,mType));
+	}
+
+	public static void logAndDumpFile(MethodHookParam param,boolean mThisObject, MethodApiType mType) throws JSONException, IOException {			
+		JSONObject hookJson = ParseGenerator.generateHookDataJson(param,mType);
 		
+		String outDir = "";
+		String dexPath = (String) param.args[0];
+		hookJson.put("orig", dexPath);
+        
+		//Ignore loading of files from /system or /data/app
+        if (dexPath.startsWith("/system/") || dexPath.startsWith("/data/app") )
+        {
+        	hookJson.put("dump", false);
+        	hookJson.put("path", dexPath);
+        }
+        else
+        {
+        	hookJson.put("dump", true);
+            String uniq = UUID.randomUUID().toString();
+            //outDir = outDir + "/" + PACKAGENAME  + dexPath.replace("/", "_") + "-" + uniq;
+            outDir = dexPath + "_" + uniq+".DROPPED_FILE";
+
+            InputStream in = new FileInputStream(dexPath);
+            OutputStream out = new FileOutputStream(outDir);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+			
+            hookJson.put("path", outDir);
+        }
+        
+		Logger.logHook(hookJson);
 	}
 	
 	

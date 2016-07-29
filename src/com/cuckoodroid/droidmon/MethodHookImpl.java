@@ -59,6 +59,8 @@ public class MethodHookImpl extends XC_MethodHook{
 				Logger.logProcessWriteMethod(param,mThisObject,mType);
 			else if(param.method.getName().contains("read"))
 				Logger.logProcessReadMethod(param,mThisObject,mType);
+			else if(param.method.getName().contains("openDexFile") || param.method.getName().equals("load"))
+				Logger.logAndDumpFile(param,mThisObject,mType);
 			else
 				Logger.logGenericMethod(param,mThisObject,mType);
 		} catch (Exception e) {
